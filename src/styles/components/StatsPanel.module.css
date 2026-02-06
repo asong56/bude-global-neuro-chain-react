@@ -4,22 +4,36 @@
   left: 2rem;
   width: 300px;
   max-height: 500px;
-  background: rgba(12,12,18,0.95);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(12, 12, 18, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   backdrop-filter: blur(20px);
   overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrollbars during transition */
   z-index: 15;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition:
+    max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease;
 }
 
 .statsPanel.collapsed {
-    max-height: 48px; /* Height of header only */
-    background: rgba(12,12,18,0.6);
-    width: auto;
-    min-width: 200px;
-    overflow-y: hidden;
+  max-height: 48px; /* Height of header only */
+  background: rgba(12, 12, 18, 0.6);
+  width: 220px;
+  overflow-y: hidden;
+}
+
+.statsContent {
+  opacity: 1;
+  transition: opacity 0.3s ease 0.1s; /* Slight delay on open to let height start expanding */
+}
+
+.statsContent.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease; /* Faster date out on close */
 }
 
 .statsPanel::-webkit-scrollbar {
@@ -31,13 +45,13 @@
 }
 
 .statsPanel::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
 }
 
 .statsHeader {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,7 +60,7 @@
 }
 
 .statsHeader:hover {
-    background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .statsHeader h3 {
@@ -60,9 +74,9 @@
 }
 
 .toggleIcon {
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    margin-left: 0.5rem;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-left: 0.5rem;
 }
 
 .statsGrid {
@@ -75,16 +89,16 @@
 .statCard {
   text-align: center;
   padding: 0.75rem;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .statValue {
   font-size: 1.5rem;
   font-weight: 600;
   color: #0ea5e9;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .statLabel {
@@ -98,7 +112,7 @@
 .topNodes,
 .clusterDist {
   padding: 1rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .topNodes h4,
@@ -115,7 +129,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .topNodeItem:last-child {
@@ -138,7 +152,7 @@
 .nodeCount {
   font-size: 0.7rem;
   color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .clusterBar {
@@ -166,7 +180,7 @@
 .barContainer {
   position: relative;
   height: 20px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -184,7 +198,7 @@
   transform: translateY(-50%);
   font-size: 0.65rem;
   color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 @media (max-width: 768px) {
@@ -199,15 +213,15 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 0.25rem;
   }
-  
+
   .statCard {
     padding: 0.5rem;
   }
-  
+
   .statValue {
     font-size: 1.2rem;
   }
-  
+
   .statLabel {
     font-size: 0.6rem;
   }
